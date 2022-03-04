@@ -1,0 +1,51 @@
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+import UserList from './components/Users.js'
+import FooterPage from './components/Main.js'
+import MenuPage from './components/Main.js'
+import axios from 'axios'
+
+class App extends React.Component {
+   constructor(props) {
+       super(props)
+       this.state = {
+           'users': []
+       }
+          }
+
+   componentDidMount() {
+       axios.get('http://127.0.0.1:8000/api/users/')
+           .then(response => {
+               const users = response.data
+                   this.setState(
+                   {
+                       'users': users
+                   }
+               )
+           }).catch(error => console.log(error))
+   }
+
+   render () {
+       return (
+       <div>
+            <div class="container">
+                <MenuPage />
+            </div>
+            <div class="content">
+                <div class="container">
+                   <div>
+                       <UserList users={this.state.users} />
+                   </div>
+                </div>
+            </div>
+            <div class="container">
+                <FooterPage />
+            </div>
+        </div>
+
+       )
+   }
+}
+
+export default App;
